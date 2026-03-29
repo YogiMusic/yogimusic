@@ -12,18 +12,27 @@ export default function Home() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [user, setUser] = useState<any>(null)
+
+  const closeAuth = () => {
+    setShowAuth(false)
+    setEmail('')
+    setPassword('')
+    setMessage('')
+    setShowPassword(false)
+  }
 
   const handleAuth = async () => {
     if (isLogin) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) setMessage(error.message)
-      else { setUser(data.user); setShowAuth(false); setMessage('') }
+      else { setUser(data.user); closeAuth() }
     } else {
       const { error } = await supabase.auth.signUp({ email, password })
       if (error) setMessage(error.message)
-      else setMessage('נשלח אימייל אישור — בדקי את תיבת הדואר!')
+      else { setMessage('ההרשמה הצליחה!') }
     }
   }
 
@@ -47,9 +56,14 @@ export default function Home() {
         .btn-nav:hover { background: #4da6ff; color: #050d1a; }
         .btn-nav-filled { background: #4da6ff; border: 1px solid #4da6ff; color: #050d1a; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; }
         .btn-nav-filled:hover { background: #55aaff; }
-        input::placeholder { color: #7aaed4; }
+        input { font-family: Arial, sans-serif !important; font-size: 15px !important; }
+        input::placeholder { color: #7aaed4; font-family: "Nunito", sans-serif !important; }
+        .eye-btn { background: none; border: none; cursor: pointer; color: #7aaed4; padding: 0 10px; font-size: 18px; }
+        .input-wrap { position: relative; display: flex; align-items: center; margin-bottom: 12px; }
+        .input-wrap input { margin-bottom: 0 !important; flex: 1; padding-left: 40px !important; }
+        .input-wrap .eye-btn { position: absolute; left: 8px; }
       `}</style>
-      <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #050d1a, #0a1f3d, #050d1a, #071528)', backgroundSize: '400% 400%', animation: 'gradientMove 12s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
+      <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #1a3a6e, #0a1f3d, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
 
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 5%', borderBottom: '1px solid #1a3a5c' }}>
           <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
@@ -61,8 +75,8 @@ export default function Home() {
               </>
             ) : (
               <>
-                <button className="btn-nav" onClick={() => { setIsLogin(true); setShowAuth(true); setMessage('') }}>התחברות</button>
-                <button className="btn-nav-filled" onClick={() => { setIsLogin(false); setShowAuth(true); setMessage('') }}>הרשמה</button>
+                <button className="btn-nav" onClick={() => { setIsLogin(true); setShowAuth(true) }}>התחברות</button>
+                <button className="btn-nav-filled" onClick={() => { setIsLogin(false); setShowAuth(true) }}>הרשמה</button>
               </>
             )}
           </div>
@@ -85,14 +99,17 @@ export default function Home() {
         </div>
 
         {showAuth && (
-          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setShowAuth(false)}>
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={closeAuth}>
             <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '400px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
               <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Nunito", sans-serif', fontSize: '28px', fontWeight: '800' }}>
                 {isLogin ? 'כניסה לחשבון' : 'יצירת חשבון'}
               </h2>
-              <input type="email" placeholder="אימייל" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box', fontFamily: '"Nunito", sans-serif', fontSize: '16px' }}/>
-              <input type="password" placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box', fontFamily: '"Nunito", sans-serif', fontSize: '16px' }}/>
-              {message && <p style={{ color: message.includes('אימייל') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
+              <input type="email" placeholder="אימייל" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
+              <div className="input-wrap">
+                <input type={showPassword ? 'text' : 'password'} placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', boxSizing: 'border-box' as 'border-box' }}/>
+                <button className="eye-btn" onClick={() => setShowPassword(!showPassword)}>{showPassword ? '🙈' : '👁️'}</button>
+              </div>
+              {message && <p style={{ color: message.includes('הצליח') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
               <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>
                 {isLogin ? 'כניסה' : 'יצירת חשבון'}
               </button>
