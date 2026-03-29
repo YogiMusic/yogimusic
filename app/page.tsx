@@ -53,8 +53,14 @@ export default function Home() {
           <p style={{ color: '#7aaed4', fontSize: '18px', margin: 0, fontFamily: '"Nunito", sans-serif' }}>תווים וחבילות לימוד לנגנים</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
-          <div style={{ backgroundColor: 'rgba(13, 31, 53, 0.85)', borderRadius: '16px', padding: '28px', border: '1px solid #1a3a5c', backdropFilter: 'blur(10px)' }}>
+          <div style={{ backgroundColor: 'rgba(13, 31, 53, 0.85)', borderRadius: '16px', padding: '28px', border: '1px solid #1a3a5c' }}>
             <h2 style={{ color: '#4da6ff', marginBottom: '8px', fontFamily: '"Nunito", sans-serif', fontWeight: '700', fontSize: '20px' }}>עספור שיר הנושא</h2>
             <p style={{ color: '#7aaed4', marginBottom: '16px' }}>טאבים PDF</p>
-            <p style={{ fontSize: '22px', fontWeight: 'bold', marginBottom:
-            
+            <p style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '16px', color: '#4da6ff', fontFamily: '"Nunito", sans-serif' }}>חינם</p>
+            <a href="/asfur.pdf" download className="btn-3d">להורדה</a>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}
