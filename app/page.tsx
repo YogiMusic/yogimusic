@@ -10,9 +10,12 @@ const supabase = createClient(
 export default function Home() {
   const [showAuth, setShowAuth] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
+  const [isForgot, setIsForgot] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [user, setUser] = useState<any>(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -30,11 +33,24 @@ export default function Home() {
     setShowAuth(false)
     setEmail('')
     setPassword('')
+    setConfirmPassword('')
     setMessage('')
     setShowPassword(false)
+    setShowConfirmPassword(false)
+    setIsForgot(false)
   }
 
   const handleAuth = async () => {
+    if (isForgot) {
+      const { error } = await supabase.auth.resetPasswordForEmail(email)
+      if (error) setMessage(error.message)
+      else setMessage('נשלח אימייל לאיפוס סיסמא!')
+      return
+    }
+    if (!isLogin && password !== confirmPassword) {
+      setMessage('הסיסמאות אינן תואמות')
+      return
+    }
     if (isLogin) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) setMessage(error.message)
@@ -92,19 +108,21 @@ export default function Home() {
         .input-wrap input { margin-bottom: 0 !important; flex: 1; padding-left: 40px !important; }
         .input-wrap .eye-btn { position: absolute; left: 8px; }
         .product-title { font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; color: #4da6ff; margin-bottom: 8px; letter-spacing: 0.5px; }
-        .menu-item { padding: 14px 20px; color: #a8d4ff; font-family: "Nunito", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #1a3a5c; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+        .menu-item { padding: 14px 20px; color: #a8d4ff; font-family: "Nunito", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #1a3a5c; transition: all 0.2s; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
         .menu-item:hover { background: linear-gradient(145deg, #2980ff22, #1a5abf22); color: white; padding-right: 28px; }
         .menu-item:last-child { border-bottom: none; }
         .hamburger-wrap { position: relative; }
         .hamburger-wrap:hover .menu-dropdown { display: block; }
         .menu-dropdown { display: none; position: absolute; top: 0; right: 0; padding-top: 40px; z-index: 100; }
-        .menu-dropdown-inner { background: #0d1f35; border: 1px solid #1a3a5c; border-radius: 12px; minWidth: 220px; overflow: hidden; min-width: 220px; }
+        .menu-dropdown-inner { background: #0d1f35; border: 1px solid #1a3a5c; border-radius: 12px; overflow: hidden; min-width: 220px; }
         .hamburger { background: none; border: none; cursor: pointer; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
         .hamburger span { display: block; width: 24px; height: 2px; background: #4da6ff; border-radius: 2px; }
         .social-icon { transition: all 0.2s; opacity: 0.8; }
         .social-icon:hover { opacity: 1; transform: scale(1.1); }
         .course-card { background: rgba(13,31,53,0.85); border-radius: 16px; border: 1px solid #1a3a5c; overflow: hidden; transition: all 0.2s; cursor: pointer; }
         .course-card:hover { border-color: #4da6ff; transform: translateY(-4px); }
+        .link-text { color: #4da6ff; cursor: pointer; font-size: 13px; }
+        .link-text:hover { text-decoration: underline; }
       `}</style>
       <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #0e2244, #0b1929, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
 
@@ -173,7 +191,6 @@ export default function Home() {
             <h1 style={{ fontSize: '52px', fontFamily: '"Bebas Neue", sans-serif', fontWeight: '400', color: '#4da6ff', margin: '0 0 8px 0', letterSpacing: '3px' }}>Yogi Guitar</h1>
             <p style={{ color: '#7aaed4', fontSize: '18px', margin: 0 }}>תווים וחבילות לימוד לנגנים</p>
           </div>
-
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
             <div style={{ backgroundColor: 'rgba(13, 31, 53, 0.85)', borderRadius: '16px', padding: '28px', border: '1px solid #1a3a5c' }}>
               <h2 className="product-title">עספור — שיר הנושא</h2>
@@ -238,36 +255,50 @@ export default function Home() {
           <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={closeAuth}>
             <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '400px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
               <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Nunito", sans-serif', fontSize: '28px', fontWeight: '800' }}>
-                {isLogin ? 'כניסה לחשבון' : 'יצירת חשבון'}
+                {isForgot ? 'איפוס סיסמא' : isLogin ? 'כניסה לחשבון' : 'יצירת חשבון'}
               </h2>
               <input type="email" placeholder="אימייל" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
-              <div className="input-wrap">
-                <input type={showPassword ? 'text' : 'password'} placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', boxSizing: 'border-box' as 'border-box' }}/>
-                <button className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  ) : (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                      <line x1="1" y1="1" x2="23" y2="23"/>
-                    </svg>
+              {!isForgot && (
+                <>
+                  <div className="input-wrap">
+                    <input type={showPassword ? 'text' : 'password'} placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', boxSizing: 'border-box' as 'border-box' }}/>
+                    <button className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      ) : (
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      )}
+                    </button>
+                  </div>
+                  {!isLogin && (
+                    <div className="input-wrap" style={{ marginBottom: '20px' }}>
+                      <input type={showConfirmPassword ? 'text' : 'password'} placeholder="אימות סיסמא" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', boxSizing: 'border-box' as 'border-box' }}/>
+                      <button className="eye-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                        {showConfirmPassword ? (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        ) : (
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        )}
+                      </button>
+                    </div>
                   )}
-                </button>
-              </div>
-              {message && <p style={{ color: message.includes('הצליח') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
-              <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>
-                {isLogin ? 'כניסה' : 'יצירת חשבון'}
-              </button>
-              {isLogin && (
-                <p style={{ textAlign: 'center', color: '#7aaed4', fontSize: '14px', margin: 0 }}>
-                  עדיין אין לך חשבון?
-                  <span style={{ color: '#4da6ff', cursor: 'pointer', marginRight: '4px' }} onClick={() => setIsLogin(false)}>הרשמה</span>
-                </p>
+                </>
               )}
+              {message && <p style={{ color: message.includes('הצליח') || message.includes('נשלח') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
+              <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>
+                {isForgot ? 'שלח קישור איפוס' : isLogin ? 'כניסה' : 'יצירת חשבון'}
+              </button>
+              <div style={{ textAlign: 'center', fontSize: '13px', color: '#7aaed4', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {isLogin && !isForgot && (
+                  <span className="link-text" onClick={() => { setIsForgot(true); setMessage('') }}>שכחת סיסמא?</span>
+                )}
+                {isForgot && (
+                  <span className="link-text" onClick={() => { setIsForgot(false); setMessage('') }}>חזרה להתחברות</span>
+                )}
+                {!isForgot && isLogin && (
+                  <span>עדיין אין לך חשבון? <span className="link-text" onClick={() => { setIsLogin(false); setMessage('') }}>הרשמה</span></span>
+                )}
+              </div>
             </div>
           </div>
         )}
