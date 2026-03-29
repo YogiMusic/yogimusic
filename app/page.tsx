@@ -17,9 +17,14 @@ export default function Home() {
   const [user, setUser] = useState<any>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showContact, setShowContact] = useState(false)
+  const [showVideo, setShowVideo] = useState(false)
+  const [showCourses, setShowCourses] = useState(false)
   const [contactName, setContactName] = useState('')
   const [contactPhone, setContactPhone] = useState('')
   const [contactSent, setContactSent] = useState(false)
+  const [videoName, setVideoName] = useState('')
+  const [videoPhone, setVideoPhone] = useState('')
+  const [videoSent, setVideoSent] = useState(false)
 
   const closeAuth = () => {
     setShowAuth(false)
@@ -50,9 +55,18 @@ export default function Home() {
     const res = await fetch('https://formspree.io/f/maqleqrq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: contactName, phone: contactPhone })
+      body: JSON.stringify({ type: 'קביעת שיעור', name: contactName, phone: contactPhone })
     })
     if (res.ok) { setContactSent(true); setContactName(''); setContactPhone('') }
+  }
+
+  const handleVideo = async () => {
+    const res = await fetch('https://formspree.io/f/maqleqrq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'סרטון הדרכה אישי', name: videoName, phone: videoPhone })
+    })
+    if (res.ok) { setVideoSent(true); setVideoName(''); setVideoPhone('') }
   }
 
   return (
@@ -85,22 +99,28 @@ export default function Home() {
         .hamburger span { display: block; width: 24px; height: 2px; background: #4da6ff; border-radius: 2px; transition: all 0.3s; }
         .social-icon { transition: all 0.2s; opacity: 0.8; }
         .social-icon:hover { opacity: 1; transform: scale(1.1); }
+        .video-btn { background: rgba(13,31,53,0.85); border: 1px solid #1a3a5c; color: #a8d4ff; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+        .video-btn:hover { background: linear-gradient(145deg, #2980ff22, #1a5abf22); color: white; border-color: #4da6ff; }
+        .course-card { background: rgba(13,31,53,0.85); border-radius: 16px; border: 1px solid #1a3a5c; overflow: hidden; transition: all 0.2s; cursor: pointer; }
+        .course-card:hover { border-color: #4da6ff; transform: translateY(-4px); }
       `}</style>
       <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #0e2244, #0b1929, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
 
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 5%', borderBottom: '1px solid #1a3a5c', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ position: 'relative' }}>
-              <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-                <span/>
-                <span/>
-                <span/>
+            <div style={{ position: 'relative' }} onMouseEnter={() => setMenuOpen(true)} onMouseLeave={() => setMenuOpen(false)}>
+              <button className="hamburger">
+                <span/><span/><span/>
               </button>
               {menuOpen && (
-                <div style={{ position: 'absolute', top: '44px', right: '0', background: '#0d1f35', border: '1px solid #1a3a5c', borderRadius: '12px', minWidth: '220px', zIndex: 100, overflow: 'hidden' }}>
-                  <div className="menu-item" onClick={() => { setMenuOpen(false) }}>
+                <div style={{ position: 'absolute', top: '40px', right: '0', background: '#0d1f35', border: '1px solid #1a3a5c', borderRadius: '12px', minWidth: '220px', zIndex: 100, overflow: 'hidden' }}>
+                  <div className="menu-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     אזור אישי
+                  </div>
+                  <div className="menu-item" onClick={() => { setMenuOpen(false); setShowCourses(true) }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    קורסים דיגיטליים
                   </div>
                   <div className="menu-item" onClick={() => { setMenuOpen(false); setShowContact(true) }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -114,7 +134,7 @@ export default function Home() {
                   </a>
                   <div style={{ display: 'flex', gap: '16px', padding: '14px 20px', borderTop: '1px solid #1a3a5c' }}>
                     <a href="https://www.instagram.com/yogiguitar?igsh=MWI0MGNyNnJta2t3bg==" target="_blank" rel="noreferrer" className="social-icon">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a8d4ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a8d4ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                     </a>
                     <a href="https://www.facebook.com/share/1Fj7LTp4u8/?mibextid=wwXIfr" target="_blank" rel="noreferrer" className="social-icon">
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="#a8d4ff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -147,6 +167,12 @@ export default function Home() {
             <h1 style={{ fontSize: '52px', fontFamily: '"Bebas Neue", sans-serif', fontWeight: '400', color: '#4da6ff', margin: '0 0 8px 0', letterSpacing: '3px' }}>Yogi Guitar</h1>
             <p style={{ color: '#7aaed4', fontSize: '18px', margin: 0 }}>תווים וחבילות לימוד לנגנים</p>
           </div>
+
+          <button className="video-btn" onClick={() => setShowVideo(true)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            סרטוני הדרכה אישיים
+          </button>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
             <div style={{ backgroundColor: 'rgba(13, 31, 53, 0.85)', borderRadius: '16px', padding: '28px', border: '1px solid #1a3a5c' }}>
               <h2 className="product-title">עספור — שיר הנושא</h2>
@@ -156,6 +182,39 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {showCourses && (
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setShowCourses(false)}>
+            <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '500px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
+              <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Nunito", sans-serif', fontSize: '28px', fontWeight: '800' }}>קורסים דיגיטליים</h2>
+              <a href="https://www.udemy.com/course/guitarfreedom/?referralCode=629B52EC17454E1CD2DD" target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                <div className="course-card" style={{ padding: '24px' }}>
+                  <img src="/course.jpg" alt="קורס גיטרה" style={{ width: '100%', borderRadius: '8px', marginBottom: '16px', display: 'block' }} onError={(e: any) => e.target.style.display='none'}/>
+                  <h3 style={{ color: '#4da6ff', fontFamily: '"Playfair Display", serif', fontSize: '20px', marginBottom: '8px' }}>לדעת לאלתר על כל שיר</h3>
+                  <p style={{ color: '#7aaed4', fontSize: '14px', margin: 0 }}>לחצו למעבר לקורס ב-Udemy</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        )}
+
+        {showVideo && (
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => { setShowVideo(false); setVideoSent(false) }}>
+            <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '420px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
+              <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '16px', fontFamily: '"Nunito", sans-serif', fontSize: '24px', fontWeight: '800' }}>סרטוני הדרכה אישיים</h2>
+              {videoSent ? (
+                <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>תודה! נחזור אליך בקרוב 🎸</p>
+              ) : (
+                <>
+                  <p style={{ color: '#7aaed4', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', textAlign: 'right' }}>תוכלו לקבל סרטון הדרכה אישי, שבו אני מסביר ומדגים איך לנגן שירים ספציפיים לפי בקשתכם, כדי שתוכלו להתקדם בגיטרה בקלות ובכיף 🎸</p>
+                  <input type="text" placeholder="שם מלא" value={videoName} onChange={e => setVideoName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
+                  <input type="tel" placeholder="טלפון" value={videoPhone} onChange={e => setVideoPhone(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box' }}/>
+                  <button className="btn-3d" onClick={handleVideo}>שלח פנייה</button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
         {showContact && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => { setShowContact(false); setContactSent(false) }}>
