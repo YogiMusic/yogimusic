@@ -41,29 +41,8 @@ export default function Home() {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-        .btn-3d {
-          background: linear-gradient(145deg, #2980ff, #1a5abf);
-          box-shadow: 0 6px 0 #0d3a8a, 0 8px 10px rgba(0,0,0,0.4);
-          transition: all 0.15s ease;
-          display: block;
-          text-align: center;
-          text-decoration: none;
-          color: white;
-          padding: 14px 24px;
-          border-radius: 10px;
-          font-weight: bold;
-          font-size: 16px;
-          font-family: "Nunito", sans-serif;
-          width: 100%;
-          box-sizing: border-box;
-          border: none;
-          cursor: pointer;
-        }
-        .btn-3d:hover {
-          background: linear-gradient(145deg, #55aaff, #2980ff);
-          box-shadow: 0 3px 0 #0d3a8a, 0 4px 6px rgba(0,0,0,0.4);
-          transform: translateY(3px);
-        }
+        .btn-3d { background: linear-gradient(145deg, #2980ff, #1a5abf); box-shadow: 0 6px 0 #0d3a8a, 0 8px 10px rgba(0,0,0,0.4); transition: all 0.15s ease; display: block; text-align: center; text-decoration: none; color: white; padding: 14px 24px; border-radius: 10px; font-weight: bold; font-size: 16px; font-family: "Nunito", sans-serif; width: 100%; box-sizing: border-box; border: none; cursor: pointer; }
+        .btn-3d:hover { background: linear-gradient(145deg, #55aaff, #2980ff); box-shadow: 0 3px 0 #0d3a8a, 0 4px 6px rgba(0,0,0,0.4); transform: translateY(3px); }
         .btn-nav { background: transparent; border: 1px solid #4da6ff; color: #4da6ff; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; }
         .btn-nav:hover { background: #4da6ff; color: #050d1a; }
         .btn-nav-filled { background: #4da6ff; border: 1px solid #4da6ff; color: #050d1a; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; }
@@ -71,7 +50,7 @@ export default function Home() {
         input::placeholder { color: #7aaed4; }
       `}</style>
       <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #050d1a, #0a1f3d, #050d1a, #071528)', backgroundSize: '400% 400%', animation: 'gradientMove 12s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
-        
+
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 5%', borderBottom: '1px solid #1a3a5c' }}>
           <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -82,8 +61,8 @@ export default function Home() {
               </>
             ) : (
               <>
-                <button className="btn-nav" onClick={() => { setIsLogin(true); setShowAuth(true) }}>התחברות</button>
-                <button className="btn-nav-filled" onClick={() => { setIsLogin(false); setShowAuth(true) }}>הרשמה</button>
+                <button className="btn-nav" onClick={() => { setIsLogin(true); setShowAuth(true); setMessage('') }}>התחברות</button>
+                <button className="btn-nav-filled" onClick={() => { setIsLogin(false); setShowAuth(true); setMessage('') }}>הרשמה</button>
               </>
             )}
           </div>
@@ -108,15 +87,21 @@ export default function Home() {
         {showAuth && (
           <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setShowAuth(false)}>
             <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '400px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
-              <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '32px', letterSpacing: '2px' }}>{isLogin ? 'כניסה לחשבון' : 'הרשמה'}</h2>
+              <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Bebas Neue", sans-serif', fontSize: '32px', letterSpacing: '2px' }}>
+                {isLogin ? 'כניסה לחשבון' : 'יצירת חשבון'}
+              </h2>
               <input type="email" placeholder="אימייל" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box', fontFamily: '"Nunito", sans-serif', fontSize: '16px' }}/>
               <input type="password" placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box', fontFamily: '"Nunito", sans-serif', fontSize: '16px' }}/>
               {message && <p style={{ color: message.includes('אימייל') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
-              <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>{isLogin ? 'התחברות' : 'הרשמה'}</button>
-              <p style={{ textAlign: 'center', color: '#7aaed4', fontSize: '14px', margin: 0 }}>
-                {isLogin ? 'עדיין אין לך חשבון?' : 'כבר יש לך חשבון?'}
-                <span style={{ color: '#4da6ff', cursor: 'pointer', marginRight: '4px' }} onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'הרשמה' : 'התחברות'}</span>
-              </p>
+              <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>
+                {isLogin ? 'כניסה' : 'יצירת חשבון'}
+              </button>
+              {isLogin && (
+                <p style={{ textAlign: 'center', color: '#7aaed4', fontSize: '14px', margin: 0 }}>
+                  עדיין אין לך חשבון?
+                  <span style={{ color: '#4da6ff', cursor: 'pointer', marginRight: '4px' }} onClick={() => setIsLogin(false)}>הרשמה</span>
+                </p>
+              )}
             </div>
           </div>
         )}
