@@ -58,15 +58,19 @@ export default function Home() {
         .btn-nav-filled:hover { background: #55aaff; }
         input { font-family: Arial, sans-serif !important; font-size: 15px !important; }
         input::placeholder { color: #7aaed4; font-family: "Nunito", sans-serif !important; }
-        .eye-btn { background: none; border: none; cursor: pointer; color: #7aaed4; padding: 0 10px; font-size: 18px; }
+        .eye-btn { background: none; border: none; cursor: pointer; color: #7aaed4; padding: 0 10px; display: flex; align-items: center; }
+        .eye-btn:hover { color: #4da6ff; }
         .input-wrap { position: relative; display: flex; align-items: center; margin-bottom: 12px; }
         .input-wrap input { margin-bottom: 0 !important; flex: 1; padding-left: 40px !important; }
         .input-wrap .eye-btn { position: absolute; left: 8px; }
       `}</style>
-      <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #1a3a6e, #0a1f3d, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
+      <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #0e2244, #162d4a, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
 
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 5%', borderBottom: '1px solid #1a3a5c' }}>
-          <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <img src="/logo.JPG" alt="logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }}/>
+            <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
+          </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             {user ? (
               <>
@@ -107,7 +111,20 @@ export default function Home() {
               <input type="email" placeholder="אימייל" value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
               <div className="input-wrap">
                 <input type={showPassword ? 'text' : 'password'} placeholder="סיסמא" value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', boxSizing: 'border-box' as 'border-box' }}/>
-                <button className="eye-btn" onClick={() => setShowPassword(!showPassword)}>{showPassword ? '🙈' : '👁️'}</button>
+                <button className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                      <line x1="1" y1="1" x2="23" y2="23"/>
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  )}
+                </button>
               </div>
               {message && <p style={{ color: message.includes('הצליח') ? '#4da6ff' : '#ff6b6b', textAlign: 'center', marginBottom: '12px', fontSize: '14px' }}>{message}</p>}
               <button className="btn-3d" onClick={handleAuth} style={{ marginBottom: '12px' }}>
