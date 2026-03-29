@@ -84,8 +84,8 @@ export default function Home() {
         .btn-nav:hover { background: #4da6ff; color: #050d1a; }
         .btn-nav-filled { background: #4da6ff; border: 1px solid #4da6ff; color: #050d1a; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; }
         .btn-nav-filled:hover { background: #55aaff; }
-        input { font-family: Arial, sans-serif !important; font-size: 15px !important; }
-        input::placeholder { color: #7aaed4; font-family: "Nunito", sans-serif !important; }
+        input { font-family: Arial, sans-serif !important; font-size: 15px !important; text-align: right !important; }
+        input::placeholder { color: #7aaed4; font-family: "Nunito", sans-serif !important; text-align: right; }
         .eye-btn { background: none; border: none; cursor: pointer; color: #7aaed4; padding: 0 10px; display: flex; align-items: center; }
         .eye-btn:hover { color: #4da6ff; }
         .input-wrap { position: relative; display: flex; align-items: center; margin-bottom: 12px; }
@@ -95,12 +95,14 @@ export default function Home() {
         .menu-item { padding: 14px 20px; color: #a8d4ff; font-family: "Nunito", sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 1px solid #1a3a5c; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
         .menu-item:hover { background: linear-gradient(145deg, #2980ff22, #1a5abf22); color: white; padding-right: 28px; }
         .menu-item:last-child { border-bottom: none; }
+        .hamburger-wrap { position: relative; }
+        .hamburger-wrap:hover .menu-dropdown { display: block; }
+        .menu-dropdown { display: none; position: absolute; top: 0; right: 0; padding-top: 40px; z-index: 100; }
+        .menu-dropdown-inner { background: #0d1f35; border: 1px solid #1a3a5c; border-radius: 12px; minWidth: 220px; overflow: hidden; min-width: 220px; }
         .hamburger { background: none; border: none; cursor: pointer; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
-        .hamburger span { display: block; width: 24px; height: 2px; background: #4da6ff; border-radius: 2px; transition: all 0.3s; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: #4da6ff; border-radius: 2px; }
         .social-icon { transition: all 0.2s; opacity: 0.8; }
         .social-icon:hover { opacity: 1; transform: scale(1.1); }
-        .video-btn { background: rgba(13,31,53,0.85); border: 1px solid #1a3a5c; color: #a8d4ff; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
-        .video-btn:hover { background: linear-gradient(145deg, #2980ff22, #1a5abf22); color: white; border-color: #4da6ff; }
         .course-card { background: rgba(13,31,53,0.85); border-radius: 16px; border: 1px solid #1a3a5c; overflow: hidden; transition: all 0.2s; cursor: pointer; }
         .course-card:hover { border-color: #4da6ff; transform: translateY(-4px); }
       `}</style>
@@ -108,21 +110,25 @@ export default function Home() {
 
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 5%', borderBottom: '1px solid #1a3a5c', position: 'relative' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ position: 'relative' }} onMouseEnter={() => setMenuOpen(true)} onMouseLeave={() => setMenuOpen(false)}>
+            <div className="hamburger-wrap">
               <button className="hamburger">
                 <span/><span/><span/>
               </button>
-              {menuOpen && (
-                <div style={{ position: 'absolute', top: '40px', right: '0', background: '#0d1f35', border: '1px solid #1a3a5c', borderRadius: '12px', minWidth: '220px', zIndex: 100, overflow: 'hidden' }}>
+              <div className="menu-dropdown">
+                <div className="menu-dropdown-inner">
                   <div className="menu-item">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     אזור אישי
                   </div>
-                  <div className="menu-item" onClick={() => { setMenuOpen(false); setShowCourses(true) }}>
+                  <div className="menu-item" onClick={() => setShowCourses(true)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                     קורסים דיגיטליים
                   </div>
-                  <div className="menu-item" onClick={() => { setMenuOpen(false); setShowContact(true) }}>
+                  <div className="menu-item" onClick={() => setShowVideo(true)}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="2"/><polygon points="10,8 16,12 10,16"/></svg>
+                    סרטוני הדרכה אישיים
+                  </div>
+                  <div className="menu-item" onClick={() => setShowContact(true)}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     קביעת שיעור
                   </div>
@@ -141,7 +147,7 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
             <img src="/logo.JPG" alt="logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }}/>
             <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
@@ -167,11 +173,6 @@ export default function Home() {
             <h1 style={{ fontSize: '52px', fontFamily: '"Bebas Neue", sans-serif', fontWeight: '400', color: '#4da6ff', margin: '0 0 8px 0', letterSpacing: '3px' }}>Yogi Guitar</h1>
             <p style={{ color: '#7aaed4', fontSize: '18px', margin: 0 }}>תווים וחבילות לימוד לנגנים</p>
           </div>
-
-          <button className="video-btn" onClick={() => setShowVideo(true)}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-            סרטוני הדרכה אישיים
-          </button>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
             <div style={{ backgroundColor: 'rgba(13, 31, 53, 0.85)', borderRadius: '16px', padding: '28px', border: '1px solid #1a3a5c' }}>
@@ -203,10 +204,10 @@ export default function Home() {
             <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '420px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
               <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '16px', fontFamily: '"Nunito", sans-serif', fontSize: '24px', fontWeight: '800' }}>סרטוני הדרכה אישיים</h2>
               {videoSent ? (
-                <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>תודה! נחזור אליך בקרוב 🎸</p>
+                <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>תודה! נחזור אליך בקרוב</p>
               ) : (
                 <>
-                  <p style={{ color: '#7aaed4', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', textAlign: 'right' }}>תוכלו לקבל סרטון הדרכה אישי, שבו אני מסביר ומדגים איך לנגן שירים ספציפיים לפי בקשתכם, כדי שתוכלו להתקדם בגיטרה בקלות ובכיף 🎸</p>
+                  <p style={{ color: '#7aaed4', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', textAlign: 'right' }}>תוכלו לקבל סרטון הדרכה אישי, שבו אני מסביר ומדגים איך לנגן שירים ספציפיים לפי בקשתכם, כדי שתוכלו להתקדם בגיטרה בקלות ובכיף</p>
                   <input type="text" placeholder="שם מלא" value={videoName} onChange={e => setVideoName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
                   <input type="tel" placeholder="טלפון" value={videoPhone} onChange={e => setVideoPhone(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box' }}/>
                   <button className="btn-3d" onClick={handleVideo}>שלח פנייה</button>
@@ -221,7 +222,7 @@ export default function Home() {
             <div style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '400px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
               <h2 style={{ color: '#4da6ff', textAlign: 'center', marginBottom: '24px', fontFamily: '"Nunito", sans-serif', fontSize: '28px', fontWeight: '800' }}>קביעת שיעור</h2>
               {contactSent ? (
-                <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>תודה! נחזור אליך בקרוב 🎸</p>
+                <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>תודה! נחזור אליך בקרוב</p>
               ) : (
                 <>
                   <input type="text" placeholder="שם מלא" value={contactName} onChange={e => setContactName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
