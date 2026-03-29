@@ -1,0 +1,6 @@
+{"timestamp":"03:46:06.336","source":"Server","level":"ERROR","message":"Error: ENOENT: no such file or directory, scandir '/workspaces/yogimusic/mysite/app'"}
+{"timestamp":"03:46:06.346","source":"Server","level":"ERROR","message":"Error: ENOENT: no such file or directory, scandir '/workspaces/yogimusic/mysite/app'"}
+{"timestamp":"03:46:06.399","source":"Browser","level":"ERROR","message":"Failed to fetch RSC payload for https://symmetrical-train-v6x7gwwq5rpjcxjjp-3000.app.github.dev/. Falling back to browser navigation. {}"}
+{"timestamp":"03:46:06.399","source":"Browser","level":"ERROR","message":"Failed to fetch RSC payload for https://symmetrical-train-v6x7gwwq5rpjcxjjp-3000.app.github.dev/. Falling back to browser navigation. {}"}
+{"timestamp":"03:46:06.399","source":"Browser","level":"ERROR","message":"Failed to fetch RSC payload for https://symmetrical-train-v6x7gwwq5rpjcxjjp-3000.app.github.dev/. Falling back to browser navigation. {}"}
+{"timestamp":"03:46:06.399","source":"Browser","level":"ERROR","message":"Failed to fetch RSC payload for https://symmetrical-train-v6x7gwwq5rpjcxjjp-3000.app.github.dev/. Falling back to browser navigation. {}"}
