@@ -33,6 +33,14 @@ export default function Home() {
   const [videoSent, setVideoSent] = useState(false)
   const [downloads, setDownloads] = useState<string[]>([])
 
+  const loadDownloads = async (userId: string) => {
+    const { data } = await supabase
+      .from('downloads')
+      .select('product_id')
+      .eq('user_id', userId)
+    if (data) setDownloads(data.map((d: any) => d.product_id))
+  }
+
   const closeAuth = () => {
     setShowAuth(false)
     setEmail('')
@@ -63,6 +71,7 @@ export default function Home() {
         const name = data.user?.user_metadata?.full_name || data.user?.email || ''
         setUser(data.user)
         setDisplayName(name)
+        await loadDownloads(data.user.id)
         closeAuth()
       }
     } else {
@@ -77,6 +86,7 @@ export default function Home() {
         const name = fullName || data.user?.email || ''
         setUser(data.user)
         setDisplayName(name)
+        await loadDownloads(data.user!.id)
         closeAuth()
       }
     }
@@ -89,13 +99,14 @@ export default function Home() {
     setDownloads([])
   }
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!user) {
       setIsLogin(true)
       setShowAuth(true)
       return
     }
     if (!downloads.includes('asfur')) {
+      await supabase.from('downloads').insert({ user_id: user.id, product_id: 'asfur' })
       setDownloads([...downloads, 'asfur'])
     }
     const link = document.createElement('a')
