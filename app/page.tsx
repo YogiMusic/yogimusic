@@ -28,6 +28,7 @@ export default function Home() {
   const [contactPhone, setContactPhone] = useState('')
   const [contactSent, setContactSent] = useState(false)
   const [videoName, setVideoName] = useState('')
+  const [videoSong, setVideoSong] = useState('')
   const [videoPhone, setVideoPhone] = useState('')
   const [videoSent, setVideoSent] = useState(false)
   const [downloads, setDownloads] = useState<string[]>([])
@@ -90,7 +91,7 @@ export default function Home() {
 
   const handleDownload = () => {
     if (!user) {
-      setIsLogin(false)
+      setIsLogin(true)
       setShowAuth(true)
       return
     }
@@ -116,9 +117,9 @@ export default function Home() {
     const res = await fetch('https://formspree.io/f/maqleqrq', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'סרטון הדרכה אישי', name: videoName, phone: videoPhone })
+      body: JSON.stringify({ type: 'סרטון הדרכה אישי', name: videoName, song: videoSong, phone: videoPhone })
     })
-    if (res.ok) { setVideoSent(true); setVideoName(''); setVideoPhone('') }
+    if (res.ok) { setVideoSent(true); setVideoName(''); setVideoSong(''); setVideoPhone('') }
   }
 
   const EyeIcon = ({ open }: { open: boolean }) => open ? (
@@ -142,58 +143,13 @@ export default function Home() {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-        .btn-3d {
-          background: linear-gradient(145deg, #2980ff, #1a5abf);
-          box-shadow: 0 6px 0 #0d3a8a, 0 8px 10px rgba(0,0,0,0.4);
-          transition: all 0.15s ease;
-          display: block;
-          text-align: center;
-          text-decoration: none;
-          color: white;
-          padding: 14px 24px;
-          border-radius: 10px;
-          font-weight: bold;
-          font-size: 16px;
-          font-family: "Nunito", sans-serif;
-          width: 100%;
-          box-sizing: border-box;
-          border: none;
-          cursor: pointer;
-        }
-        .btn-3d:hover {
-          background: linear-gradient(145deg, #55aaff, #2980ff);
-          box-shadow: 0 3px 0 #0d3a8a, 0 4px 6px rgba(0,0,0,0.4);
-          transform: translateY(3px);
-        }
+        .btn-3d { background: linear-gradient(145deg, #2980ff, #1a5abf); box-shadow: 0 6px 0 #0d3a8a, 0 8px 10px rgba(0,0,0,0.4); transition: all 0.15s ease; display: block; text-align: center; text-decoration: none; color: white; padding: 14px 24px; border-radius: 10px; font-weight: bold; font-size: 16px; font-family: "Nunito", sans-serif; width: 100%; box-sizing: border-box; border: none; cursor: pointer; }
+        .btn-3d:hover { background: linear-gradient(145deg, #55aaff, #2980ff); box-shadow: 0 3px 0 #0d3a8a, 0 4px 6px rgba(0,0,0,0.4); transform: translateY(3px); }
         .btn-3d:active { box-shadow: 0 1px 0 #0d3a8a; transform: translateY(5px); }
-        .btn-nav {
-          background: transparent;
-          border: 1px solid #4da6ff;
-          color: #4da6ff;
-          padding: 8px 20px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-family: "Nunito", sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          transition: all 0.15s ease;
-          box-shadow: 0 4px 0 #0d3a8a;
-        }
+        .btn-nav { background: transparent; border: 1px solid #4da6ff; color: #4da6ff; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.15s ease; box-shadow: 0 4px 0 #0d3a8a; }
         .btn-nav:hover { background: #1a5abf; color: white; transform: translateY(2px); box-shadow: 0 2px 0 #0d3a8a; }
         .btn-nav:active { transform: translateY(4px); box-shadow: 0 0px 0 #0d3a8a; }
-        .btn-nav-filled {
-          background: linear-gradient(145deg, #2980ff, #1a5abf);
-          border: 1px solid #4da6ff;
-          color: white;
-          padding: 8px 20px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-family: "Nunito", sans-serif;
-          font-size: 14px;
-          font-weight: 700;
-          transition: all 0.15s ease;
-          box-shadow: 0 4px 0 #0d3a8a;
-        }
+        .btn-nav-filled { background: linear-gradient(145deg, #2980ff, #1a5abf); border: 1px solid #4da6ff; color: white; padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: "Nunito", sans-serif; font-size: 14px; font-weight: 700; transition: all 0.15s ease; box-shadow: 0 4px 0 #0d3a8a; }
         .btn-nav-filled:hover { background: linear-gradient(145deg, #55aaff, #2980ff); transform: translateY(2px); box-shadow: 0 2px 0 #0d3a8a; }
         .btn-nav-filled:active { transform: translateY(4px); box-shadow: 0 0px 0 #0d3a8a; }
         input { font-family: Arial, sans-serif !important; font-size: 15px !important; text-align: right !important; }
@@ -316,30 +272,30 @@ export default function Home() {
         </div>
 
         {showPersonal && (
-          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }} onClick={() => setShowPersonal(false)}>
-            <div className="modal-inner" style={{ background: '#0d1f35', borderRadius: '16px', padding: '40px', width: '90%', maxWidth: '500px', border: '1px solid #1a3a5c' }} onClick={e => e.stopPropagation()}>
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #0e2244, #0b1929, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', zIndex: 1000, overflowY: 'auto', direction: 'rtl' }}>
+            <div style={{ maxWidth: '700px', margin: '0 auto', padding: '40px 5%', position: 'relative' }}>
               <CloseBtn onClose={() => setShowPersonal(false)} />
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                 <img src="/logo.JPG" alt="logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }}/>
                 <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '20px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
               </div>
-              <h2 style={{ color: '#4da6ff', marginBottom: '6px', fontFamily: '"Nunito", sans-serif', fontSize: '24px', fontWeight: '800' }}>האזור האישי שלי</h2>
-              <p style={{ color: '#7aaed4', fontSize: '13px', marginBottom: '24px' }}>כל התכנים שהורדת</p>
+              <h2 style={{ color: '#4da6ff', marginBottom: '6px', fontFamily: '"Nunito", sans-serif', fontSize: '28px', fontWeight: '800' }}>האזור האישי שלי</h2>
+              <p style={{ color: '#7aaed4', fontSize: '14px', marginBottom: '32px' }}>שלום, {displayName} — כל התכנים שהורדת</p>
               {downloads.length === 0 ? (
-                <p style={{ color: '#7aaed4', textAlign: 'center', fontSize: '15px' }}>עדיין לא הורדת תכנים</p>
+                <p style={{ color: '#7aaed4', textAlign: 'center', fontSize: '16px', marginTop: '60px' }}>עדיין לא הורדת תכנים</p>
               ) : (
                 downloads.map((item) => (
-                  <div key={item} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '10px', border: '1px solid #1a3a5c', padding: '16px 20px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div key={item} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px solid #1a3a5c', padding: '20px 24px', marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div className="check-circle">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
                       </div>
                       <div>
-                        <p style={{ color: 'white', margin: 0, fontSize: '15px', fontWeight: '700' }}>עספור — שיר הנושא</p>
-                        <p style={{ color: '#7aaed4', margin: 0, fontSize: '12px' }}>טאבים PDF · חינם</p>
+                        <p style={{ color: 'white', margin: 0, fontSize: '16px', fontWeight: '700' }}>עספור — שיר הנושא</p>
+                        <p style={{ color: '#7aaed4', margin: 0, fontSize: '13px' }}>טאבים PDF · חינם</p>
                       </div>
                     </div>
-                    <a href="/asfur.pdf" download className="btn-3d" style={{ width: 'auto', padding: '10px 18px', fontSize: '14px' }}>הורדה חוזרת</a>
+                    <a href="/asfur.pdf" download className="btn-3d" style={{ width: 'auto', padding: '10px 20px', fontSize: '14px' }}>הורדה חוזרת</a>
                   </div>
                 ))
               )}
@@ -374,6 +330,7 @@ export default function Home() {
                 <>
                   <p style={{ color: '#7aaed4', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', textAlign: 'right' }}>תוכלו לקבל סרטון הדרכה אישי, שבו אני מסביר ומדגים איך לנגן שירים ספציפיים לפי בקשתכם, כדי שתוכלו להתקדם בגיטרה בקלות ובכיף</p>
                   <input type="text" placeholder="שם מלא" value={videoName} onChange={e => setVideoName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
+                  <input type="text" placeholder="שם השיר" value={videoSong} onChange={e => setVideoSong(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
                   <input type="tel" placeholder="טלפון" value={videoPhone} onChange={e => setVideoPhone(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box' }}/>
                   <button className="btn-3d" onClick={handleVideo}>שלח פנייה</button>
                 </>
@@ -438,6 +395,9 @@ export default function Home() {
                 )}
                 {!isForgot && isLogin && (
                   <span>עדיין אין לך חשבון? <span className="link-text" onClick={() => { setIsLogin(false); setMessage('') }}>הרשמה</span></span>
+                )}
+                {!isForgot && !isLogin && (
+                  <span>כבר יש לך חשבון? <span className="link-text" onClick={() => { setIsLogin(true); setMessage('') }}>התחברות</span></span>
                 )}
               </div>
             </div>
