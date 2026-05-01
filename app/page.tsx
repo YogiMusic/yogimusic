@@ -201,6 +201,7 @@ export default function Home() {
         .link-text { color: #4da6ff; cursor: pointer; font-size: 13px; }
         .link-text:hover { text-decoration: underline; }
         .modal-inner { position: relative; }
+        @media (max-width: 600px) { .desktop-auth { display: none !important; } }
       `}</style>
 
       <main style={{ fontFamily: '"Nunito", sans-serif', width: '100%', maxWidth: '100%', margin: '0', padding: '0', background: 'linear-gradient(270deg, #020a14, #0a1f3d, #0d2b52, #0e2244, #0b1929, #050d1a)', backgroundSize: '600% 600%', animation: 'gradientMove 16s ease infinite', minHeight: '100vh', color: 'white', direction: 'rtl' }}>
@@ -243,13 +244,30 @@ export default function Home() {
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="#a8d4ff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                     </a>
                   </div>
+                  {!user ? (
+                    <>
+                      <div className="menu-item" onClick={() => { setIsLogin(true); setShowAuth(true) }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        התחברות
+                      </div>
+                      <div className="menu-item" onClick={() => { setIsLogin(false); setShowAuth(true) }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                        הרשמה
+                      </div>
+                    </>
+                  ) : (
+                    <div className="menu-item" onClick={handleLogout}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                      התנתקות
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <img src="/logo.JPG" alt="logo" style={{ width: '40px', height: '40px', borderRadius: '50%' }}/>
             <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '24px', color: '#4da6ff', letterSpacing: '2px' }}>Yogi Guitar</span>
           </div>
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="desktop-auth" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             {user ? (
               <>
                 <span style={{ color: '#7aaed4', fontSize: '14px' }}>שלום, {user.email}</span>
