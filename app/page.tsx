@@ -340,7 +340,7 @@ const [contactName, setContactName] = useState(displayName)
               ) : (
                 <>
                   <p style={{ color: '#7aaed4', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', textAlign: 'right' }}>תוכלו לקבל סרטון הדרכה אישי, שבו אני מסביר ומדגים איך לנגן שירים ספציפיים לפי בקשתכם, כדי שתוכלו להתקדם בגיטרה בקלות ובכיף</p>
-                  <input type="text" placeholder="שם מלא" value={videoName} onChange={e => setVideoName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
+                  <input type="text" placeholder="שם מלא" value={user ? (videoName || displayName) : videoName} onChange={e => setVideoName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
                   <input type="text" placeholder="שם השיר" value={videoSong} onChange={e => setVideoSong(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
                   <input type="tel" placeholder="טלפון" value={videoPhone} onChange={e => setVideoPhone(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box' }}/>
                   <button className="btn-3d" onClick={handleVideo}>שלח פנייה</button>
@@ -359,7 +359,7 @@ const [contactName, setContactName] = useState(displayName)
                 <p style={{ color: '#4da6ff', textAlign: 'center', fontSize: '18px' }}>✓ הפנייה נשלחה בהצלחה! נחזור אליך בקרוב</p>
               ) : (
                 <>
-                  <input type="text" placeholder="שם מלא" value={contactName} onChange={e => setContactName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
+                  <input type="text" placeholder="שם מלא" value={user ? (contactName || displayName) : contactName} onChange={e => setContactName(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '12px', boxSizing: 'border-box' as 'border-box' }}/>
                   <input type="tel" placeholder="טלפון" value={contactPhone} onChange={e => setContactPhone(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #1a3a5c', background: '#050d1a', color: 'white', marginBottom: '20px', boxSizing: 'border-box' as 'border-box' }}/>
                   <button className="btn-3d" onClick={handleContact}>שלח פנייה</button>
                 </>
